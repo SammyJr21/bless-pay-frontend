@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from '@mui/material/Link';
 import {
   Container,
@@ -13,6 +13,7 @@ import {
   Text,
 } from './SigninElements';
 import { IMaskInput } from 'react-imask';
+import Scaffold from '../Scaffold';
 
 const Signin = () => {
 
@@ -29,51 +30,56 @@ const Signin = () => {
 
   }
 
+  useEffect(() => {
+    console.log(localStorage.getItem('account_info'))
+  })
+
   const realizarLogin = () => {
     console.log('Form:', form);
+    localStorage.setItem("account_info", JSON.stringify({
+      cpf: '7031',
+      ag: '16',
+      cta: '123',
+      token: '123asdew'
+    }))
   }
 
   return (
     <>
-      <Container>
-        <FormWrap>
-          <Icon to='/'>BlessPay</Icon>
-          <FormContent>
-            <Form onSubmit={(e) => {
-              e.preventDefault();
-              realizarLogin();
-            }}>
-              <FormH1>Sign in to your account</FormH1>
-              <FormLabel htmlFor='for'>CPF</FormLabel>
-              <FormInput
-                name="cpf"
-                value={form.cpf}
-                onChange={handleChange}
-                as={IMaskInput}
-                mask='000.000.000-00'
-                placeholder='Digite se CPF'
-                type='cpf'
-                required
-              />
-              <FormLabel htmlFor='for'>password</FormLabel>
-              <FormInput
-                name="password"
-                type='password' 
-                required 
-                value={form.password}
-                onChange={handleChange}
-              />
-              <FormButton>Continue</FormButton>
-              <Text>
-                <Link href='/'>Forgot password</Link>
-              </Text>
-              <Text>
-                <Link href='/Signup'>Sign Up</Link>
-              </Text>
-            </Form>
-          </FormContent>
-        </FormWrap>
-      </Container>
+      <Scaffold>
+        <Form onSubmit={(e) => {
+          e.preventDefault();
+          realizarLogin();
+        }}>
+          <FormH1>Sign in to your account</FormH1>
+          <FormLabel htmlFor='for'>CPF</FormLabel>
+          <FormInput
+            name="cpf"
+            value={form.cpf}
+            onChange={handleChange}
+            as={IMaskInput}
+            mask='000.000.000-00'
+            placeholder='Digite se CPF'
+            type='cpf'
+            required
+          />
+          <FormLabel htmlFor='for'>password</FormLabel>
+          <FormInput
+            name="password"
+            type='password' 
+            required 
+            value={form.password}
+            onChange={handleChange}
+          />
+          <FormButton>Continue</FormButton>
+          <Text>
+            <Link href='/'>Forgot password</Link>
+          </Text>
+          <Text>
+            <Link href='/Signup'>Sign Up</Link>
+          </Text>
+        </Form>
+      </Scaffold>
     </>
   );
 };

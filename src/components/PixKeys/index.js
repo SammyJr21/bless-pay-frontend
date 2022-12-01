@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IMaskInput } from 'react-imask';
 import FormataUtils from '../../utils/formataUtil';
+import Scaffold from '../Scaffold';
 import {
   Container,
   Form,
@@ -28,58 +29,54 @@ const PixKeys = (props) => {
   }
   return (
     <>
-      <Container>
-        <FormWrap>
-          <Icon to='/'>BlessPay</Icon>
-          <FormContent>
-            <Form
-              onSubmit={() => {
-                console.log('foi!!!');
-              }}
-            >
-              <FormH1>{titulo} </FormH1>
-              <FormSelect
-                value={selectValue}
-                onChange={(e) => setSelectValue(e.target.value)}
-              >
-                {list.map((item) => (
-                  <option value={item.id}>{item.name}</option>
-                ))}
-              </FormSelect>
-              <FormLabel hidden={selectValue != 2} htmlFor='for'>
-                E-mail
-              </FormLabel>
-              <FormInput hidden={selectValue != 2} type='email' />
-              <FormLabel hidden={selectValue != 1} htmlFor='for'>
-                CPF
-              </FormLabel>
-              <FormInput
-                as={IMaskInput}
-                mask='000.000.000-00'
-                placeholder='Digite se CPF'
-                hidden={selectValue != 1}
-                type='cpf'
-                required
-                onChange={(e) => {
-                  FormataUtils.formatarMaskCpf(e.target.value);
-                }}
-              />
+      <Scaffold>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log('foi!!!');
+          }}
+        >
+          <FormH1>{titulo} </FormH1>
+          <FormSelect
+            value={selectValue}
+            onChange={(e) => setSelectValue(e.target.value)}
+          >
+            {list.map((item) => (
+              <option key={item.id} value={item.id}>{item.name}</option>
+            ))}
+          </FormSelect>
+          <FormLabel hidden={selectValue != 2} htmlFor='for'>
+            E-mail
+          </FormLabel>
+          <FormInput hidden={selectValue != 2} type='email' />
+          <FormLabel hidden={selectValue != 1} htmlFor='for'>
+            CPF
+          </FormLabel>
+          <FormInput required={!selectValue != 2}
+            as={IMaskInput}
+            mask='000.000.000-00'
+            placeholder='Digite se CPF'
+            hidden={selectValue != 1}
+            type='cpf'
+            
+            onChange={(e) => {
+              FormataUtils.formatarMaskCpf(e.target.value);
+            }}
+          />
 
-              <FormLabel hidden={selectValue != 3} htmlFor='for'>
-                Celular
-              </FormLabel>
-              <FormInput hidden={selectValue != 3} type='celular' />
+          <FormLabel hidden={selectValue != 3} htmlFor='for'>
+            Celular
+          </FormLabel>
+          <FormInput required={!selectValue != 2} hidden={selectValue != 3} type='celular' />
 
-              <FormLabel hidden={selectValue != 4} htmlFor='for'>
-                Chave aleatoria
-              </FormLabel>
-              <FormInput hidden={selectValue != 4} type='chave aleatoria' />
-              {children}
-              <FormButton type='submit'>Continue</FormButton>
-            </Form>
-          </FormContent>
-        </FormWrap>
-      </Container>
+          <FormLabel hidden={selectValue != 4} htmlFor='for'>
+            Chave aleatoria
+          </FormLabel>
+          <FormInput required={!selectValue != 2} hidden={selectValue != 4} type='chave aleatoria' />
+          {children}
+          <FormButton >Continue</FormButton>
+        </Form>
+      </Scaffold>
     </>
   );
 };
