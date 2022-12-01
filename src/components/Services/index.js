@@ -16,7 +16,13 @@ const Services = () => {
   return (
     <ServicesContainer id='services'>
       <ServicesH1> Our Services </ServicesH1>
-      <ServicesWrapper>
+      <ServicesWrapper
+        smooth={true}
+        duration={500}
+        spy={true}
+        exact='true'
+        offset={-80}
+      >
         <ServicesCard>
           <ServicesIcon src={Icon1} />
           <ServicesH2>Reduce expenses</ServicesH2>

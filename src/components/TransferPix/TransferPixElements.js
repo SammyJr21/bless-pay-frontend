@@ -52,10 +52,26 @@ export const FormContent = styled.div`
     padding: 10px;
   }
 `;
+export const FormSelect = styled.select`
+  padding: 16px 16px;
+  margin-bottom: 32px;
+  border: none;
+  border-radius: 4px;
 
-export const Form = styled.form`
+  option {
+    color: black;
+    background: white;
+    display: flex;
+    white-space: pre;
+    min-height: 20px;
+    padding: 0px 2px 1px;
+  }
+`;
+
+export const Form = styled.div`
   background: #010101;
   max-width: 400px;
+  justify-content: center;
   height: auto;
   width: 100%;
   z-index: 1;

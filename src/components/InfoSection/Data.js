@@ -12,7 +12,7 @@ export const home0bj0ne = {
   img: require('../../images/svg-2.svg').default,
   alt: 'Car',
   dark: false,
-  primary: false,
+  primary: true,
   darkText: true,
 };
 export const home0bjTwo = {
@@ -46,6 +46,6 @@ export const home0bjThree = {
   img: require('../../images/svg-1.svg').default,
   alt: 'Car',
   dark: false,
-  primary: false,
+  primary: true,
   darkText: true,
 };
