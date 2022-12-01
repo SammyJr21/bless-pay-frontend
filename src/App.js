@@ -6,6 +6,7 @@ import SigninPage from './pages/signin';
 import SignupPage from './pages/signup';
 import PixKeysPage from './pages/pixKeys';
 import TransferPixPage from './pages/transferPix';
+import EntriesPage from './pages/entries';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signin' element={<SigninPage />} />
+        <Route path='/entries' element={<EntriesPage />} />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/pixKeys' element={<PixKeysPage />} />
         <Route path='/transferPix' element={<TransferPixPage />} />
