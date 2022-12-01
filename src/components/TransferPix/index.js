@@ -14,7 +14,7 @@ const TransferPix = () => {
 
   return (
     <>
-      <PixKeys>
+      <PixKeys titulo="Escolha Qual Chave Usar Para Pagar">
         <FormLabel htmlFor='for'>Valor </FormLabel>
         <FormInput
           onChange={handleChange}
