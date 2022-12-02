@@ -18,7 +18,22 @@ const recoverToken = () => {
     }
 }
 
+const recoverAccountInfo = () => {
+    try {
+        const accountInfo = JSON.parse(localStorage.getItem('account_info'));
+        return {
+            accountBranch: accountInfo.accountBranch,
+            accountNumber: accountInfo.accountNumber,
+            document: accountInfo.document
+        };
+    } catch(error) {
+        console.error('An error occured while recovering the account info.', error);
+        return {};
+    }
+}
+
 export default {
     validateSession,
-    recoverToken
+    recoverToken,
+    recoverAccountInfo
 }

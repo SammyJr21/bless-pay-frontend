@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IMaskInput } from 'react-imask';
+import entryService from '../../api/entry.service';
 import Scaffold from '../Scaffold';
 import {
   Form,
@@ -8,45 +9,77 @@ import {
   FormInput,
   FormLabel,
   FormSelect,
+  Text,
 } from './PixKeysElements';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const PixKeys = (props) => {
   const [selectValue, setSelectValue] = useState(1);
   const [form, setForm] = useState({
-    cpf: '',
-    email: '',
-    celular: '',
-    chaveAleatoria: '',
+    entry: '',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, entry: value });
   };
+
   const list = [
-    { id: 1, name: 'CPF' },
-    { id: 2, name: 'E-Mail' },
-    { id: 3, name: 'Celular' },
-    { id: 4, name: 'Chave Aleatoria' },
+    { id: 1, name: 'CPF / CNPJ', value: 'CPF_CNPJ' },
+    { id: 2, name: 'E-Mail', value: 'EMAIL'},
+    { id: 3, name: 'Phone', value: 'PHONE' },
+    { id: 4, name: 'Random Key', values: 'EVP' },
   ];
+
+  const getEntryType = () => {
+    const entryType = list.find((entryType) => entryType.id == selectValue);
+    return entryType.value;
+  }
+
   const { children, titulo } = props;
-  const realizarLogin = () => {
-    console.log('Form:', form);
+
+  const Alert = withReactContent(Swal);
+
+  const showAlert = (title, body, icon) => {
+    Alert.fire({
+      icon: icon,
+      title: title,
+      html: <p>{body}</p>
+    })
+  }
+
+  const handleContinue = () => {
+    console.log('click')
+    entryService.createEntry(form.entry, getEntryType())
+      .then((response) => {
+        showAlert('Entry created successfully', undefined, 'success');
+      }).catch((error) => {
+        console.log(error);
+
+        const errorMessage = error.response?.data?.error?.message
+
+        showAlert('Oh no, an error occured :(', errorMessage, 'error');
+
+      })
   };
+
   return (
     <>
       <Scaffold>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            realizarLogin();
           }}
         >
           <FormH1>{titulo}</FormH1>
           <FormSelect
             value={selectValue}
-            onChange={(e) => setSelectValue(Number(e.target.value))}
+            onChange={(e) => {
+              setSelectValue(Number(e.target.value))
+              setForm({...form, entry: ''})
+            }}
           >
             {list.map((item) => (
               <option key={item.id} value={item.id}>
@@ -59,21 +92,23 @@ const PixKeys = (props) => {
           </FormLabel>
           <FormInput
             onChange={handleChange}
-            name='cpf'
-            value={form.cpf}
+            name='entry'
+            value={form.entry}
             as={IMaskInput}
             mask='000.000.000-00'
-            placeholder='Digite se CPF'
+            placeholder='Insert your document (CPF/CNPJ)'
             hidden={selectValue !== 1}
-            type='cpf'
+            type='text'
             required={!(selectValue !== 1)}
           />
           <FormLabel hidden={selectValue !== 2} htmlFor='for'>
             E-mail
           </FormLabel>
           <FormInput
+            name='email'
             onChange={handleChange}
-            value={form.email}
+            placeholder='Insert your email'
+            value={form.entry}
             hidden={selectValue !== 2}
             type='email'
             required={!(selectValue !== 2)}
@@ -83,25 +118,49 @@ const PixKeys = (props) => {
             Celular
           </FormLabel>
           <FormInput
+            name='phone'
             onChange={handleChange}
-            value={form.celular}
+            as={IMaskInput}
+            mask='(00) 00000-0000'
+            placeholder='Insert your phone number'
+            value={form.entry}
             hidden={selectValue !== 3}
-            type='celular'
+            type='text'
             required={!(selectValue !== 3)}
           />
 
-          <FormLabel hidden={selectValue !== 4} htmlFor='for'>
-            Chave aleatoria
-          </FormLabel>
-          <FormInput
-            onChange={handleChange}
-            value={form.chaveAleatoria}
-            hidden={selectValue !== 4}
-            type='chave aleatoria'
-            required={!(selectValue !== 4)}
-          />
+          {
+            children != undefined || selectValue !== 4
+            ?
+            <>
+              <FormLabel hidden={selectValue !== 4} htmlFor='for'>
+                Chave aleatoria
+              </FormLabel>
+              <FormInput
+                name='evp'
+                onChange={handleChange}
+                placeholder="Insert your"
+                value={form.entry}
+                hidden={selectValue !== 4}
+                type='text'
+                required={!(selectValue !== 4)}
+              />
+            </>
+            :
+            <>
+              <Text style={{
+                marginTop: '-.5em',
+                marginBottom: '2em'
+
+              }}>
+                This entry will be generated by BlessPay.
+              </Text>
+            </>
+          }
+
+          
           {children}
-          <FormButton>Continue</FormButton>
+          <FormButton onClick={handleContinue}>Continue</FormButton>
         </Form>
       </Scaffold>
     </>
