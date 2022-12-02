@@ -10,8 +10,12 @@ import {
   FormLabel,
   Text,
 } from './SigninElements';
+import api from '../../api/axios';
 
-const Signin = () => {
+const Signin = (props) => {
+
+  const { message } = props;
+
   const [form, setForm] = useState({
     cpf: '',
     password: '',
@@ -29,15 +33,22 @@ const Signin = () => {
 
   const realizarLogin = () => {
     console.log('Form:', form);
-    localStorage.setItem(
-      'account_info',
-      JSON.stringify({
-        cpf: '7031',
-        ag: '16',
-        cta: '123',
-        token: '123asdew',
-      })
-    );
+
+    api.post('user/login', undefined, {
+      headers: {
+        'document': form.cpf.replace(/\D/g,''),
+        'password': form.password
+      }
+    }).then((response) => {
+      console.log('response login: ', response);
+      localStorage.setItem(
+        'account_info',
+        JSON.stringify(response.data)
+      );
+    }).catch((error) => {
+      console.log('error: ', error)
+    })
+
   };
 
   return (
@@ -49,6 +60,20 @@ const Signin = () => {
             realizarLogin();
           }}
         >
+          {/* Sammy, transform into a styled component*/}
+          { 
+            message && 
+            <div style={{
+              marginBottom: '2em',
+              backgroundColor: '#F69697',
+              padding: '1em 1em',
+              textAlign: 'center',
+              borderRadius: '.3em'
+            }}>
+              {message}
+            </div>
+          }
+
           <FormH1>Sign in to your account</FormH1>
           <FormLabel htmlFor='for'>CPF</FormLabel>
           <FormInput

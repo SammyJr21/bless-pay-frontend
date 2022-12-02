@@ -7,6 +7,7 @@ import SignupPage from './pages/signup';
 import PixKeysPage from './pages/pixKeys';
 import TransferPixPage from './pages/transferPix';
 import EntriesPage from './pages/entries';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 function App() {
   return (
@@ -14,10 +15,22 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signin' element={<SigninPage />} />
-        <Route path='/entries' element={<EntriesPage />} />
+        <Route path='/entries' element={
+          <PrivateRoute>
+            <EntriesPage />
+          </PrivateRoute>
+        } />
         <Route path='/signup' element={<SignupPage />} />
-        <Route path='/pixKeys' element={<PixKeysPage />} />
-        <Route path='/transferPix' element={<TransferPixPage />} />
+        <Route path='/pixKeys' element={
+          <PrivateRoute>
+            <PixKeysPage />
+          </PrivateRoute>
+        } />
+        <Route path='/transferPix' element={
+          <PrivateRoute>
+            <TransferPixPage />
+          </PrivateRoute>
+        } />
       </Routes>
     </Router>
   );
