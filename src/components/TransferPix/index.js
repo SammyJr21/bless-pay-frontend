@@ -9,7 +9,7 @@ const TransferPix = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, [name]: value.replace(/\D/g,'') });
   };
 
   return (
@@ -20,7 +20,6 @@ const TransferPix = () => {
           onChange={handleChange}
           name='valor'
           value={form.valor}
-          type='number'
           required
         />
       </PixKeys>
