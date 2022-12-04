@@ -30,7 +30,7 @@ const PixKeys = (props) => {
     { id: 1, name: 'CPF / CNPJ', value: 'CPF_CNPJ' },
     { id: 2, name: 'E-Mail', value: 'EMAIL'},
     { id: 3, name: 'Phone', value: 'PHONE' },
-    { id: 4, name: 'Random Key', values: 'EVP' },
+    { id: 4, name: 'Random Key', value: 'EVP' },
   ];
 
   const getEntryType = () => {
