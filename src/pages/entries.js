@@ -1,61 +1,44 @@
 import React from 'react';
-import { EntryCard } from '../components/EntryCard';
+import Entries from '../components/Entries';
 import ScrollToTop from '../components/ScrollToTop';
-import Signin from '../components/Signin';
+import Scaffold from '../components/Scaffold';
+import {
+  ContainerPage,
+  SubDivPage,
+  TittlePage,
+} from '../components/Entries/EntriesElements';
 
 const EntriesPage = () => {
-
   const entries = [
     {
       entry: '(83) 99697-0117',
-      entryType: 'Phone'
+      entryType: 'Phone',
     },
     {
       entry: 'janjan@teste.com',
-      entryType: 'Email'
+      entryType: 'Email',
     },
     {
       entry: '703.166.994-46',
-      entryType: 'CPF'
-    }
-  ]
+      entryType: 'CPF',
+    },
+  ];
 
   return (
-    <div style={{
-      backgroundColor: 'grey',
-      display: 'flex',
-      height: '100vh',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <ScrollToTop />
-      <div style={{
-        backgroundColor: 'green', 
-        display: 'block',
-        height: '80vh',
-        width: '40vw'
-      }}>
-        <h2 style={{
-          margin: '6px'
-        }}>Your Entries</h2>
-        
-        <div style={{
-          backgroundColor: 'royalblue',
-          margin: '6px',
-          marginTop: '2em',
-          width: '98%'
-        }}>
-          
-          { 
-            entries.map((item) => {
-              return <EntryCard entryData={item}/>
-            })
-          }
+    <>
+      <Scaffold>
+        <ScrollToTop />
 
-        </div>
-
-      </div>
-    </div>
+        <ContainerPage>
+          <TittlePage>Your Entries</TittlePage>
+          <SubDivPage>
+            {entries.map((item) => {
+              return <Entries entryData={item} />;
+            })}
+          </SubDivPage>
+        </ContainerPage>
+      </Scaffold>
+    </>
   );
 };
 
