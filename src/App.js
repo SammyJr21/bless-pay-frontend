@@ -8,29 +8,40 @@ import PixKeysPage from './pages/pixKeys';
 import TransferPixPage from './pages/transferPix';
 import EntriesPage from './pages/entries';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import HomeLoggedPage from './pages/homeLogged';
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path='/homeLogged' element={<HomeLoggedPage />} />
         <Route path='/' element={<Home />} />
         <Route path='/signin' element={<SigninPage />} />
-        <Route path='/entries' element={
-          <PrivateRoute>
-            <EntriesPage />
-          </PrivateRoute>
-        } />
+        <Route
+          path='/entries'
+          element={
+            <PrivateRoute>
+              <EntriesPage />
+            </PrivateRoute>
+          }
+        />
         <Route path='/signup' element={<SignupPage />} />
-        <Route path='/pixKeys' element={
-          <PrivateRoute>
-            <PixKeysPage />
-          </PrivateRoute>
-        } />
-        <Route path='/transferPix' element={
-          <PrivateRoute>
-            <TransferPixPage />
-          </PrivateRoute>
-        } />
+        <Route
+          path='/pixKeys'
+          element={
+            <PrivateRoute>
+              <PixKeysPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/transferPix'
+          element={
+            <PrivateRoute>
+              <TransferPixPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
