@@ -37,11 +37,21 @@ const TransferPix = () => {
 
   const Alert = withReactContent(Swal);
 
-  const showAlert = (title, body, icon) => {
+  const showAlert = (title, body, icon, hasCancel, callbackFunction) => {
     Alert.fire({
       icon: icon,
       title: title,
+      showCancelButton: hasCancel,
+      cancelButtonText: 'No',
+      confirmButtonText: hasCancel ? 'Yes' : 'OK',
       html: <p>{body}</p>
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        callbackFunction()
+      }
+
+      console.log(result)
     })
   }
 
@@ -65,18 +75,33 @@ const TransferPix = () => {
       }).catch((error) => {
         console.log(error);
 
-        const errorMessage = error.response?.data?.error?.message
+        const errorObj = error.response?.data?.error;
 
         let userMessage;
 
-        if(errorMessage === 'NO_BALANCE') {
+        if(errorObj?.message.includes('NO_BALANCE')) {
           userMessage = "Insufficient funds, do you want to schedule this transaction?"
+          showAlert('Oh no, an error occured :(', userMessage, 'error', true, () => handleSchedule(errorObj?.transactionId));
+        } else {
+          userMessage = errorObj?.message;
+          showAlert('Oh no, an error occured :(', userMessage, 'error', true);
         }
-
-        showAlert('Oh no, an error occured :(', userMessage, 'error');
-
       })
   };
+
+  const handleSchedule = (transactionId) => [
+    transferService.scheduleTransaction(transactionId)
+    .then((response) => {
+      showAlert('Bless scheduled successfully', undefined, 'success');
+    }).catch((error) => {
+      console.log(error);
+
+      const errorMessage = error.response?.data?.error?.message
+
+      showAlert('Oh no, an error occured :(', errorMessage, 'error', false);
+
+    })
+  ]
 
   return (
     <>
