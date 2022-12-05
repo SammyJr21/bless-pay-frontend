@@ -15,9 +15,12 @@ import {
   ServicesWrapper
 } from '../Services/ServicesElements';
 import Scaffold from '../Scaffold';
+import { useNavigate } from 'react-router-dom';
 
 const HomeLogged = () => {
   const [sidebar, setSidebar] = useState(true);
+
+  const navigate = useNavigate();
 
   const showSiderbar = () => setSidebar(!sidebar);
   return (
@@ -32,17 +35,17 @@ const HomeLogged = () => {
           exact='true'
           offset={-80}
         >
-        <ServicesCard>
+        <ServicesCard onClick={() => navigate('/pixKeys')}>
             {/* <ServicesIconIcon src={Icon1} /> */}
             <FaPlus />
             <ServicesP>Create Key</ServicesP>
         </ServicesCard>
-        <ServicesCard>
+        <ServicesCard onClick={() => navigate('/transferPix')}>
         <FaPeopleArrows />
             {/* <ServicesIconIcon src={Icon1} /> */}
             <ServicesP>Transfer</ServicesP>
         </ServicesCard>
-        <ServicesCard>
+        <ServicesCard onClick={() => navigate('/entries')}>
           <FaUserAlt />
             {/* <ServicesIconIcon src={Icon1} /> */}
             <ServicesP>My Keys</ServicesP>
