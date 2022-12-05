@@ -7,7 +7,7 @@ import {
   EntryTypeDiv,
 } from './EntriesElements';
 const Entries = (props) => {
-  const { entryData } = props;
+  const { entryData, onDelete } = props;
 
   return (
     <>
@@ -15,7 +15,7 @@ const Entries = (props) => {
         <EntryDiv>
           <h5 style={{ color: 'white' }}>{entryData.entryType}</h5>
           <p style={{ color: 'white' }}>{entryData.entry}</p>
-          <Button>Remove</Button>
+          <Button onClick={() => onDelete(entryData.entry)}>Remove</Button>
         </EntryDiv>
       </Container>
     </>
