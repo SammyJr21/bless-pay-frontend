@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { IMaskInput } from 'react-imask';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import userService from '../../api/user.service';
 import Scaffold from '../Scaffold';
 import {
   Form,
@@ -10,6 +14,19 @@ import {
 } from './SignupElements';
 
 const Signup = () => {
+
+  const navigate = useNavigate();
+
+  const Alert = withReactContent(Swal);
+
+  const showAlert = (title, body, icon) => {
+    return Alert.fire({
+      icon: icon,
+      title: title,
+      html: <p>{body}</p>
+    });
+  }
+
   const [form, setForm] = useState({
     cpf: '',
     nome: '',
@@ -24,6 +41,28 @@ const Signup = () => {
   };
 
   const realizarLogin = () => {
+    if(form.senha !== form.senhaVerificada) {
+      showAlert('Something is wrong...', 'Entered password doesn\'t match to the verification password!', 'error');
+      return;
+    }
+
+    const obj = {
+      cpfCnpj: form.cpf.replace(/\D/g,''),
+      fullName: form.nome,
+      password: form.senha
+    }
+
+    userService.signUp(obj).then((response) => {
+      showAlert('God bless you!', 'Your account has been created.', 'success').then((result) => {
+        if(result.isConfirmed) {
+          navigate('/signin');
+        }
+      });
+    }).catch((error) => {
+      const errorMessage = error.response?.data;
+      showAlert('Oh no!', errorMessage, 'error');
+    })
+
     console.log('Form:', form);
   };
 

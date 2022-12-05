@@ -32,8 +32,24 @@ const recoverAccountInfo = () => {
     }
 }
 
+const login = (form) => {
+    return api.post('user/login', undefined, {
+        headers: {
+          'document': form.cpf.replace(/\D/g,''),
+          'password': form.password
+        }
+    })
+}
+
+const signUp = (form) => {
+    console.log('form sign', form)
+    return api.post('user/sign-up', form);
+}
+
 export default {
     validateSession,
     recoverToken,
-    recoverAccountInfo
+    recoverAccountInfo,
+    login,
+    signUp
 }
