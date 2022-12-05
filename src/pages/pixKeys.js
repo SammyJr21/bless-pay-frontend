@@ -4,7 +4,7 @@ import PixKeys from '../components/PixKeys';
 const pixKeysPage = () => {
   return (
     <>
-      <PixKeys titulo='Escolha Qual Chave Cadastrar' />
+      <PixKeys titulo='Chosse Which Key you will signup' />
     </>
   );
 };

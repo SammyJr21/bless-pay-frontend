@@ -4,17 +4,15 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import transferService from '../../api/transfer.service';
 import userService from '../../api/user.service';
-import PixKeys from '../PixKeys';
 import Scaffold from '../Scaffold';
 import { Form, FormButton, FormH1 } from '../Scaffold/ScaffoldElements';
 import { FormInput, FormLabel, FormSelect } from './TransferPixElements';
 
 const TransferPix = () => {
-
   const [selectValue, setSelectValue] = useState(1);
   const [form, setForm] = useState({
     entry: '',
-    ammount: '0'
+    ammount: '0',
   });
 
   const handleChange = (e) => {
@@ -25,7 +23,7 @@ const TransferPix = () => {
 
   const list = [
     { id: 1, name: 'CPF / CNPJ', value: 'CPF_CNPJ' },
-    { id: 2, name: 'E-Mail', value: 'EMAIL'},
+    { id: 2, name: 'E-Mail', value: 'EMAIL' },
     { id: 3, name: 'Phone', value: 'PHONE' },
     { id: 4, name: 'Random Key', value: 'EVP' },
   ];
@@ -33,7 +31,7 @@ const TransferPix = () => {
   const getEntryType = () => {
     const entryType = list.find((entryType) => entryType.id == selectValue);
     return entryType.value;
-  }
+  };
 
   const Alert = withReactContent(Swal);
 
@@ -44,24 +42,23 @@ const TransferPix = () => {
       showCancelButton: hasCancel,
       cancelButtonText: 'No',
       confirmButtonText: hasCancel ? 'Yes' : 'OK',
-      html: <p>{body}</p>
+      html: <p>{body}</p>,
     }).then((result) => {
-
       if (result.isConfirmed) {
-        callbackFunction()
+        callbackFunction();
       }
 
-      console.log(result)
-    })
-  }
+      console.log(result);
+    });
+  };
 
-  const [ entry, setEntry ] = useState({
+  const [entry, setEntry] = useState({
     receiverBranch: 0,
-    receiverAccount: 0
+    receiverAccount: 0,
   });
 
   const handlePay = () => {
-    console.log('click')
+    console.log('click');
 
     const accountInfo = userService.recoverAccountInfo();
 
@@ -71,42 +68,52 @@ const TransferPix = () => {
       payerAccount: accountInfo.accountNumber,
       receiverEntry: form.entry,
       receiverBranch: 1,
-      receiverAccount: 1
-    }
+      receiverAccount: 1,
+    };
 
-    transferService.sendPayment(obj)
+    transferService
+      .sendPayment(obj)
       .then((response) => {
         showAlert('Bless sent successfully', undefined, 'success');
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
 
         const errorObj = error.response?.data?.error;
 
         let userMessage;
 
-        if(errorObj?.message.includes('NO_BALANCE')) {
-          userMessage = "Insufficient funds, do you want to schedule this transaction?"
-          showAlert('Oh no, an error occured :(', userMessage, 'error', true, () => handleSchedule(errorObj?.transactionId));
+        if (errorObj?.message.includes('NO_BALANCE')) {
+          userMessage =
+            'Insufficient funds, do you want to schedule this transaction?';
+          showAlert(
+            'Oh no, an error occured :(',
+            userMessage,
+            'error',
+            true,
+            () => handleSchedule(errorObj?.transactionId)
+          );
         } else {
           userMessage = errorObj?.message;
           showAlert('Oh no, an error occured :(', userMessage, 'error', true);
         }
-      })
+      });
   };
 
   const handleSchedule = (transactionId) => [
-    transferService.scheduleTransaction(transactionId)
-    .then((response) => {
-      showAlert('Bless scheduled successfully', undefined, 'success');
-    }).catch((error) => {
-      console.log(error);
+    transferService
+      .scheduleTransaction(transactionId)
+      .then((response) => {
+        showAlert('Bless scheduled successfully', undefined, 'success');
+      })
+      .catch((error) => {
+        console.log(error);
 
-      const errorMessage = error.response?.data?.error?.message
+        const errorMessage = error.response?.data?.error?.message;
 
-      showAlert('Oh no, an error occured :(', errorMessage, 'error', false);
-
-    })
-  ]
+        showAlert('Oh no, an error occured :(', errorMessage, 'error', false);
+      }),
+  ];
 
   return (
     <>
@@ -120,8 +127,8 @@ const TransferPix = () => {
           <FormSelect
             value={selectValue}
             onChange={(e) => {
-              setSelectValue(Number(e.target.value))
-              setForm({...form, entry: ''})
+              setSelectValue(Number(e.target.value));
+              setForm({ ...form, entry: '' });
             }}
           >
             {list.map((item) => (
@@ -173,29 +180,28 @@ const TransferPix = () => {
           />
 
           <FormLabel hidden={selectValue !== 4} htmlFor='for'>
-                Chave aleatoria
+            Chave aleatoria
           </FormLabel>
           <FormInput
             name='entry'
             onChange={handleChange}
-            placeholder="Insert the EVP key"
+            placeholder='Insert the EVP key'
             value={form.entry}
             hidden={selectValue !== 4}
             type='text'
             required={!(selectValue !== 4)}
           />
 
-        <FormLabel htmlFor='for'>Ammount</FormLabel>
-        <FormInput
-          onChange={handleChange}
-          name='ammount'
-          value={form.ammount}
-          required
-        />
+          <FormLabel htmlFor='for'>Ammount</FormLabel>
+          <FormInput
+            onChange={handleChange}
+            name='ammount'
+            value={form.ammount}
+            required
+          />
 
           <FormButton onClick={handlePay}>Pay</FormButton>
         </Form>
-        
       </Scaffold>
       {/* <PixKeys titulo="Escolha Qual Chave Usar Para Pagar">
 

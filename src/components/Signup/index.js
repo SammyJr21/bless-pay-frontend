@@ -14,7 +14,6 @@ import {
 } from './SignupElements';
 
 const Signup = () => {
-
   const navigate = useNavigate();
 
   const Alert = withReactContent(Swal);
@@ -23,9 +22,9 @@ const Signup = () => {
     return Alert.fire({
       icon: icon,
       title: title,
-      html: <p>{body}</p>
+      html: <p>{body}</p>,
     });
-  }
+  };
 
   const [form, setForm] = useState({
     cpf: '',
@@ -41,27 +40,38 @@ const Signup = () => {
   };
 
   const realizarLogin = () => {
-    if(form.senha !== form.senhaVerificada) {
-      showAlert('Something is wrong...', 'Entered password doesn\'t match to the verification password!', 'error');
+    if (form.senha !== form.senhaVerificada) {
+      showAlert(
+        'Something is wrong...',
+        "Entered password doesn't match to the verification password!",
+        'error'
+      );
       return;
     }
 
     const obj = {
-      cpfCnpj: form.cpf.replace(/\D/g,''),
+      cpfCnpj: form.cpf.replace(/\D/g, ''),
       fullName: form.nome,
-      password: form.senha
-    }
+      password: form.senha,
+    };
 
-    userService.signUp(obj).then((response) => {
-      showAlert('God bless you!', 'Your account has been created.', 'success').then((result) => {
-        if(result.isConfirmed) {
-          navigate('/signin');
-        }
+    userService
+      .signUp(obj)
+      .then((response) => {
+        showAlert(
+          'God bless you!',
+          'Your account has been created.',
+          'success'
+        ).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/signin');
+          }
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.response?.data;
+        showAlert('Oh no!', errorMessage, 'error');
       });
-    }).catch((error) => {
-      const errorMessage = error.response?.data;
-      showAlert('Oh no!', errorMessage, 'error');
-    })
 
     console.log('Form:', form);
   };
@@ -83,7 +93,7 @@ const Signup = () => {
             value={form.cpf}
             as={IMaskInput}
             mask='000.000.000-00'
-            placeholder='Digite seu CPF'
+            placeholder='Input your CPF'
             type='cpf'
           />
           <FormLabel htmlFor='for'>Full Name</FormLabel>

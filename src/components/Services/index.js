@@ -12,10 +12,10 @@ import {
   ServicesWrapper,
 } from './ServicesElements';
 
-const Services = () => {
+const Services = ({ lightText }) => {
   return (
     <ServicesContainer id='services'>
-      <ServicesH1> Our Services </ServicesH1>
+      <ServicesH1 lightText='true'> Our Services </ServicesH1>
       <ServicesWrapper
         smooth={true}
         duration={500}
@@ -25,22 +25,22 @@ const Services = () => {
       >
         <ServicesCard>
           <ServicesIcon src={Icon1} />
-          <ServicesH2>Our Goal is people</ServicesH2>
-          <ServicesP>
+          <ServicesH2 lightText='true'>Our Goal is people</ServicesH2>
+          <ServicesP lightText='true'>
             Let's help the world to become a better place, be part of the change
           </ServicesP>
         </ServicesCard>
         <ServicesCard>
           <ServicesIcon src={Icon2} />
-          <ServicesH2>Fast Transactions</ServicesH2>
-          <ServicesP>
+          <ServicesH2 lightText='true'>Fast Transactions</ServicesH2>
+          <ServicesP lightText='true'>
             The moment you click send, the money is on the other end
           </ServicesP>
         </ServicesCard>
-        <ServicesCard>
+        <ServicesCard lightText='true'>
           <ServicesIcon src={Icon3} />
-          <ServicesH2>Be part of a Community</ServicesH2>
-          <ServicesP>
+          <ServicesH2 lightText='true'>Be part of a Community</ServicesH2>
+          <ServicesP lightText='true'>
             After a 3 years account, you recieve a badge customized only for you{' '}
           </ServicesP>
         </ServicesCard>

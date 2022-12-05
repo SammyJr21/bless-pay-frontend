@@ -27,6 +27,13 @@ export const FormWrap = styled.div`
     height: 80%;
   }
 `;
+export const alarmDiv = styled.div`
+  margin-bottom: '2em';
+  background-color: '#F69697';
+  padding: '1em 1em';
+  text-align: 'center';
+  border-radius: '.3em';
+`;
 
 export const Icon = styled(Link)`
   margin-left: 32px;

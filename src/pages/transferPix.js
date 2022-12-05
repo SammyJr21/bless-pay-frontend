@@ -4,7 +4,7 @@ import TransferPix from '../components/TransferPix';
 const transferPixPage = () => {
   return (
     <>
-      <TransferPix titulo='Escolha Qual Chave Usar Para Pagar' />
+      <TransferPix titulo='Choose your key for payment' />
     </>
   );
 };

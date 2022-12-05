@@ -1,6 +1,10 @@
 import Link from '@mui/material/Link';
 import React, { useEffect, useState } from 'react';
 import { IMaskInput } from 'react-imask';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import userService from '../../api/user.service';
 import Scaffold from '../Scaffold';
 import {
   Form,
@@ -9,15 +13,10 @@ import {
   FormInput,
   FormLabel,
   Text,
+  alarmDiv,
 } from './SigninElements';
-import api from '../../api/axios';
-import userService from '../../api/user.service';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 
 const Signin = (props) => {
-
   const { message } = props;
 
   const navigate = useNavigate();
@@ -33,9 +32,9 @@ const Signin = (props) => {
     return Alert.fire({
       icon: icon,
       title: title,
-      html: <p>{body}</p>
+      html: <p>{body}</p>,
     });
-  }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,21 +49,20 @@ const Signin = (props) => {
   const realizarLogin = () => {
     console.log('Form:', form);
 
-    userService.login(form).then((response) => {
-      console.log('response login: ', response);
-      localStorage.setItem(
-        'account_info',
-        JSON.stringify(response.data)
-      );
+    userService
+      .login(form)
+      .then((response) => {
+        console.log('response login: ', response);
+        localStorage.setItem('account_info', JSON.stringify(response.data));
 
-      navigate('/homeLogged')
-    }).catch((error) => {
-      const errorMessage = error.response?.data?.message;
+        navigate('/homeLogged');
+      })
+      .catch((error) => {
+        const errorMessage = error.response?.data?.message;
 
-      showAlert('Oh no!', errorMessage, 'error');
-      console.log('error: ', error)
-    })
-
+        showAlert('Oh no!', errorMessage, 'error');
+        console.log('error: ', error);
+      });
   };
 
   return (
@@ -77,18 +75,7 @@ const Signin = (props) => {
           }}
         >
           {/* Sammy, transform into a styled component*/}
-          { 
-            message && 
-            <div style={{
-              marginBottom: '2em',
-              backgroundColor: '#F69697',
-              padding: '1em 1em',
-              textAlign: 'center',
-              borderRadius: '.3em'
-            }}>
-              {message}
-            </div>
-          }
+          {message && <alarmDiv>{message}</alarmDiv>}
 
           <FormH1>Sign in to your account</FormH1>
           <FormLabel htmlFor='for'>CPF</FormLabel>
@@ -98,11 +85,11 @@ const Signin = (props) => {
             onChange={handleChange}
             as={IMaskInput}
             mask='000.000.000-00'
-            placeholder='Digite se CPF'
+            placeholder='Input your CPF'
             type='cpf'
             required
           />
-          <FormLabel htmlFor='for'>password</FormLabel>
+          <FormLabel htmlFor='for'>Password</FormLabel>
           <FormInput
             name='password'
             type='password'
