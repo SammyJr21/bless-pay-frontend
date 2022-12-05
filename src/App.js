@@ -9,6 +9,7 @@ import TransferPixPage from './pages/transferPix';
 import EntriesPage from './pages/entries';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import HomeLoggedPage from './pages/homeLogged';
+import MovementsPage from './pages/movements';
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
           element={
             <PrivateRoute>
               <EntriesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/movements'
+          element={
+            <PrivateRoute>
+              <MovementsPage />
             </PrivateRoute>
           }
         />
