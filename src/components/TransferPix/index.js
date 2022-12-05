@@ -55,6 +55,11 @@ const TransferPix = () => {
     })
   }
 
+  const [ entry, setEntry ] = useState({
+    receiverBranch: 0,
+    receiverAccount: 0
+  });
+
   const handlePay = () => {
     console.log('click')
 

@@ -4,7 +4,7 @@ import { FaBars } from 'react-icons/fa';
 import Sidebar from './Sidebar/index';
 
 const HomeLogged = () => {
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(true);
 
   const showSiderbar = () => setSidebar(!sidebar);
   return (
