@@ -11,15 +11,31 @@ import {
   Text,
 } from './SigninElements';
 import api from '../../api/axios';
+import userService from '../../api/user.service';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Signin = (props) => {
 
   const { message } = props;
 
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     cpf: '',
     password: '',
   });
+
+  const Alert = withReactContent(Swal);
+
+  const showAlert = (title, body, icon) => {
+    return Alert.fire({
+      icon: icon,
+      title: title,
+      html: <p>{body}</p>
+    });
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,18 +50,18 @@ const Signin = (props) => {
   const realizarLogin = () => {
     console.log('Form:', form);
 
-    api.post('user/login', undefined, {
-      headers: {
-        'document': form.cpf.replace(/\D/g,''),
-        'password': form.password
-      }
-    }).then((response) => {
+    userService.login(form).then((response) => {
       console.log('response login: ', response);
       localStorage.setItem(
         'account_info',
         JSON.stringify(response.data)
       );
+
+      navigate('/homeLogged')
     }).catch((error) => {
+      const errorMessage = error.response?.data?.message;
+
+      showAlert('Oh no!', errorMessage, 'error');
       console.log('error: ', error)
     })
 
